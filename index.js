@@ -101,6 +101,8 @@ DB.connect(function() {
                             events: []
                         };
 
+                        users.push(updated);
+
                         return DB.insert(updated, function() {
                             res.send('Github notifications are now enabled for your account (user ' + username + '), type `/github on [events]` to listen to specific events or `/github status` to see which events you are listening to. Make sure that a webhook is set up for the repositories you\'re working on.');
                         });
