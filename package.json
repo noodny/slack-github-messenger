@@ -1,0 +1,33 @@
+{
+  "name": "slack-alias",
+  "version": "0.0.1",
+  "description": "Custom alias groups support for slack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noodny/slack-alias.git"
+  },
+  "keywords": [
+    "slack",
+    "alias"
+  ],
+  "author": "Krzysiek Jakubik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noodny/slack-alias/issues"
+  },
+  "homepage": "https://github.com/noodny/slack-alias#readme",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "heroku-self-ping": "^1.1.2",
+    "lodash": "^3.10.1",
+    "mongodb": "^2.0.42",
+    "pm2": "^0.14.7",
+    "pmx": "^0.4.6",
+    "slackbotapi": "^1.3.4"
+  }
+}
