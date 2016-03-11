@@ -41,7 +41,7 @@ DataBase.prototype = {
             return cb();
         }
         var collection = this.db.collection('users');
-        collection.update({channel: user.id}
+        collection.update({id: user.id}
             , {$set: user}, function(err, result) {
                 assert.equal(err, null);
                 assert.equal(1, result.result.n);
@@ -53,7 +53,7 @@ DataBase.prototype = {
             return cb();
         }
         var collection = this.db.collection('users');
-        collection.remove({channel: user.id}, function(err, result) {
+        collection.remove({id: user.id}, function(err, result) {
             assert.equal(err, null);
             assert.equal(1, result.result.n);
             cb(result.result);
