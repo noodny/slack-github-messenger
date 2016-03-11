@@ -146,7 +146,7 @@ DB.connect(function() {
                             users.push(updated);
 
                             return DB.update(updated, function() {
-                                res.send(getEventsMessage(user));
+                                res.send(getEventsMessage(updated));
                             });
                         } else {
                             return res.status(400).send('Currently supported events are ' + actions.join(', '));
@@ -181,7 +181,7 @@ DB.connect(function() {
                             users.push(updated);
 
                             return DB.update(updated, function() {
-                                res.send(getEventsMessage(user));
+                                res.send(getEventsMessage(updated));
                             });
                         } else {
                             return res.status(400).send('Currently supported events are ' + actions.join(', '));
