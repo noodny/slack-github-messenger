@@ -100,9 +100,7 @@ DB.connect(function() {
                             events: user.events
                         };
 
-                        users = _.filter(users, function(o) {
-                            return o.id !== user.id
-                        });
+                        users = _.reject(users, user);
                         users.push(updated);
 
                         return DB.update(updated, function() {
@@ -144,9 +142,7 @@ DB.connect(function() {
                                 events: _.union(user.events, events)
                             };
 
-                            users = _.filter(users, function(o) {
-                                return o.id !== user.id
-                            });
+                            users = _.reject(users, user);
                             users.push(updated);
 
                             return DB.update(updated, function() {
@@ -181,9 +177,7 @@ DB.connect(function() {
                                 events: _.without.apply(_, [user.events].concat(events))
                             };
 
-                            users = _.filter(users, function(o) {
-                                return o.id !== user.id
-                            });
+                            users = _.reject(users, user);
                             users.push(updated);
 
                             return DB.update(updated, function() {

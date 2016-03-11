@@ -22,13 +22,13 @@ DataBase.prototype = {
             cb();
         }.bind(this));
     },
-    insert: function(alias, cb) {
+    insert: function(user, cb) {
         if(!this.ready) {
             return cb();
         }
         var collection = this.db.collection('users');
         collection.insert([
-            alias
+            user
         ], function(err, result) {
             assert.equal(err, null);
             assert.equal(1, result.result.n);
@@ -36,24 +36,24 @@ DataBase.prototype = {
             cb(result.result);
         });
     },
-    update: function(alias, cb) {
+    update: function(user, cb) {
         if(!this.ready) {
             return cb();
         }
         var collection = this.db.collection('users');
-        collection.update({channel: alias.channel, from: alias.from}
-            , {$set: alias}, function(err, result) {
+        collection.update({channel: user.id}
+            , {$set: user}, function(err, result) {
                 assert.equal(err, null);
                 assert.equal(1, result.result.n);
                 cb(result.result);
             });
     },
-    remove: function(alias, cb) {
+    remove: function(user, cb) {
         if(!this.ready) {
             return cb();
         }
         var collection = this.db.collection('users');
-        collection.remove({channel: alias.channel, from: alias.from}, function(err, result) {
+        collection.remove({channel: user.id}, function(err, result) {
             assert.equal(err, null);
             assert.equal(1, result.result.n);
             cb(result.result);
