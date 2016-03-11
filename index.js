@@ -199,12 +199,19 @@ DB.connect(function() {
 
         app.post('/', function(req, res) {
             var action = req.body.action || null;
-            var username = req.body.assignee.login;
-            var user = _.find(users, {username: username});
-            var repository = req.body.repository.owner.login + '/' + req.body.repository.name;
-            var url = '';
 
-            if(action && actions.indexOf(action) > -1 && user && user.events.indexOf(action) > -1) {
+            if(action && actions.indexOf(action) > -1) {
+                var username = req.body.assignee.login;
+                var user = _.find(users, {username: username});
+
+                if(!user || user.events.indexOf(action) === -1) {
+                    return res.status(200).end();
+                }
+
+                var repository = req.body.repository.owner.login + '/' + req.body.repository.name;
+                var url = '';
+                var number = 0;
+
                 var message = 'You were ' + action;
 
                 if(action === 'assigned') {
@@ -217,15 +224,17 @@ DB.connect(function() {
 
                 if(req.body.pull_request) {
                     message += ' pull request ';
-                    url = req.body.pull_request.url;
+                    url = req.body.pull_request.html_url;
+                    number = req.body.pull_request.number;
                 }
 
                 if(req.body.issue) {
                     message += ' issue ';
-                    url = req.body.issue.url;
+                    url = req.body.issue.html_url;
+                    number = req.body.issue.number;
                 }
 
-                message += repository + '#' + req.body.number + ' (' + url + ')';
+                message += repository + '#' + number + ' (' + url + ')';
 
                 slack.sendPM(user.id, message);
             }
