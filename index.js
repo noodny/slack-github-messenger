@@ -25,6 +25,23 @@ DB.connect(function() {
             'logging': (process.env.DEBUG || false)
         });
 
+        function getEventsMessage(user) {
+            if(user.events.length === 0) {
+                return 'You are not listening to any events at the moment.';
+            } else {
+                var events = [];
+
+                _.each(actions, function(action) {
+                    if(user.events.indexOf(action) > -1) {
+                        events.push('*' + action + '*');
+                    } else {
+                        events.push(action);
+                    }
+                });
+                return 'You are currently listening to events in *bold*:\n' + events.join(', ');
+            }
+        }
+
         var app = express();
 
         app.use(bodyParser.json());
@@ -59,12 +76,7 @@ DB.connect(function() {
                     });
 
                     if(user) {
-                        if(user.events.length) {
-                            message = 'These are the events which you are listening to:\n';
-                            message += user.events.join(', ');
-                        } else {
-                            message = 'You are not listening to any events at the moment.'
-                        }
+                        message = getEventsMessage(user);
 
                         return res.send(message);
                     } else {
@@ -134,7 +146,7 @@ DB.connect(function() {
                             users.push(updated);
 
                             return DB.update(updated, function() {
-                                res.send('You\'ve added these events to your active events list: ' + events.join(', ') + '\nYou\'re now listening to:\n' + updated.events.join(', '));
+                                res.send(getEventsMessage(user));
                             });
                         } else {
                             return res.status(400).send('Currently supported events are ' + actions.join(', '));
@@ -169,7 +181,7 @@ DB.connect(function() {
                             users.push(updated);
 
                             return DB.update(updated, function() {
-                                res.send('You\'ve removed these events from your active events list: ' + events.join(', ') + '\nYou\'re now listening to:\n' + updated.events.join(', '));
+                                res.send(getEventsMessage(user));
                             });
                         } else {
                             return res.status(400).send('Currently supported events are ' + actions.join(', '));
@@ -196,7 +208,7 @@ DB.connect(function() {
                 var message = 'You were ' + action;
 
                 if(action === 'assigned') {
-                    message += ' to ';
+                    message += ' to';
                 }
 
                 if(action === 'unassigned') {
