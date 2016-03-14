@@ -12,6 +12,7 @@ pm2.connect(function() {
         script: 'index.js',
         instances: instances,
         max_memory_restart: maxMemory + 'M',   // Auto restart if process taking more than XXmo
+        exec_mode : 'cluster',
         env: {                            // If needed declare some environment variables
             "NODE_ENV": "production",
             "SLACK_BOT_TOKEN": process.env.SLACK_BOT_TOKEN,
