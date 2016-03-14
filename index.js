@@ -62,10 +62,18 @@ DB.connect(function() {
                 if(text.indexOf('help') === 0) {
                     message = 'Type:\n'
                         + '`/github help` - to show this message\n'
+                        + '`/github events` - to list all supported events\n'
                         + '`/github user [github-username]` - to set your github account name\n'
                         + '`/github status` - to show a list of events which you are being notified about\n'
                         + '`/github on [one or more space separated events]` - to listen to specific events\n'
                         + '`/github off [one or more space separated events]` - to stop listening to specific events\n';
+
+                    return res.send(message);
+                }
+
+                if(text.indexOf('events') === 0) {
+                    message = 'Currently supported events:\n' +
+                            actions.join(', ');
 
                     return res.send(message);
                 }
@@ -149,7 +157,7 @@ DB.connect(function() {
                                 res.send(getEventsMessage(updated));
                             });
                         } else {
-                            return res.status(400).send('Currently supported events are ' + actions.join(', '));
+                            return res.status(400).send('Currently supported events:\n' + actions.join(', '));
                         }
                     } else {
                         return res.status(400).send('You need to set your github username first. Type `/github help` for more information.');
