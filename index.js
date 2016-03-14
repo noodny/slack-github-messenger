@@ -73,7 +73,7 @@ DB.connect(function() {
 
                 if(text.indexOf('events') === 0) {
                     message = 'Currently supported events:\n' +
-                            actions.join(', ');
+                        actions.join(', ');
 
                     return res.send(message);
                 }
@@ -219,6 +219,7 @@ DB.connect(function() {
                 var repository = req.body.repository.owner.login + '/' + req.body.repository.name;
                 var url = '';
                 var number = 0;
+                var title = '';
 
                 var message = 'You were ' + action;
 
@@ -234,15 +235,17 @@ DB.connect(function() {
                     message += ' pull request ';
                     url = req.body.pull_request.html_url;
                     number = req.body.pull_request.number;
+                    title = req.body.pull_request.title;
                 }
 
                 if(req.body.issue) {
                     message += ' issue ';
                     url = req.body.issue.html_url;
                     number = req.body.issue.number;
+                    title = req.body.issue.title;
                 }
 
-                message += repository + '#' + number + ' (' + url + ')';
+                message += '*' + repository + '#' + number + '*\n>' + title + '\n' + url;
 
                 slack.sendPM(user.id, message);
             }
